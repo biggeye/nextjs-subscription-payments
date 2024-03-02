@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react';
-import { Card, Box, Link } from '@chakra-ui/react';
-import { DataTable, ColumnDef } from '@saas-ui/react'; // Adjust if ColumnDef import is incorrect
+import { Text, Card, Box, Link } from '@chakra-ui/react';
+import { DataTable, ColumnDef, Web3Address } from '@saas-ui/react'; // Adjust if ColumnDef import is incorrect
 import { parseGalleryImages } from '@/lib/user/getGalleryItems';
 import { GalleryImage } from '@/types';
 
@@ -10,41 +10,48 @@ const ContentTables = () => {
 
   useEffect(() => {
     const fetchGalleryImages = async () => {
-        const chunkedData = await parseGalleryImages();
-        // Flatten the array of arrays into a single array
-        const flattenedData = chunkedData.flat();
-        setGalleryImages(flattenedData);
-      };
-      
+      const chunkedData = await parseGalleryImages();
+      // Flatten the array of arrays into a single array
+      const flattenedData = chunkedData.flat();
+      setGalleryImages(flattenedData);
+    };
+
     fetchGalleryImages();
   }, []);
 
-  // Correcting the property names based on the error messages
-  const columns: ColumnDef<GalleryImage>[] = [
+ const columns: ColumnDef<GalleryImage>[] = [
     {
-      header: 'Content ID', // Adjusted to lowercase 'header'
-      accessorKey: 'content_id', // Assuming accessorKey is correct; adjust based on actual library usage
-      cell: ({ row }) => <Link href={row.original.url} isExternal>{row.original.content_id}</Link>,
+      header: 'Content ID', 
+      accessorKey: 'content_id', 
+      cell: ({ row }) =>
+        <Link href={row.original.url} isExternal>
+          <Web3Address startLength={6} endLength={3} address={row.original.content_id} />
+        </Link>,
     },
     {
-      header: 'Prompt', // Adjusted to lowercase 'header'
-      accessorKey: 'prompt', // Assuming accessorKey is correct; adjust based on actual library usage
+      header: 'Prompt',
+      accessorKey: 'prompt',
+      cell: ({ row }) =>
+        <Box maxWidth="60%">
+          <Text isTruncated>
+            {row.original.prompt}
+          </Text>
+        </Box>
     },
   ];
 
   return (
-    
-        <Card>
-      <DataTable
-        columns={columns}
-        data={galleryImages}
-        isSelectable
-        isSortable
-        onSelectedRowsChange={(selected) => console.log(selected)}
-        size={{base: "xs", md: "sm", lg: "md"}}
-      />
+    <Box as="section" p="4" borderWidth="1px" borderRadius="lg" overflow="hidden" margin={5}>
+      <Card p={5}>
+        <DataTable
+          columns={columns}
+          data={galleryImages}
+          isSortable
+          onSelectedRowsChange={(selected) => console.log(selected)}
+          size={{ base: "xs", md: "sm", lg: "md" }}
+        />
       </Card>
-    
+    </Box>
   );
 };
 export default ContentTables;

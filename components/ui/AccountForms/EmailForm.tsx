@@ -1,64 +1,79 @@
 'use client';
 
-import Button from '@/components/ui/Button';
-import Card from '@/components/ui/Card';
+import { Card, VStack, Box, Button, Flex, Input, Text, useToast } from '@chakra-ui/react';
+import { Form } from '@saas-ui/react'; // Assuming you'd use Form for structured handling
 import { updateEmail } from '@/utils/auth-helpers/server';
 import { handleRequest } from '@/utils/auth-helpers/client';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-export default function EmailForm({
-  userEmail
-}: {
-  userEmail: string | undefined;
-}) {
+export default function EmailForm({ userEmail }: { userEmail: string | undefined }) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const toast = useToast();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); // Prevent default form submission
     setIsSubmitting(true);
+
+    const newEmail = e.currentTarget.newEmail.value;
+
     // Check if the new email is the same as the old email
-    if (e.currentTarget.newEmail.value === userEmail) {
-      e.preventDefault();
+    if (newEmail === userEmail) {
+      toast({
+        title: 'No Changes Detected',
+        description: "The new email is the same as the current one.",
+        status: 'info',
+        duration: 5000,
+        isClosable: true,
+      });
       setIsSubmitting(false);
       return;
     }
-    handleRequest(e, updateEmail, router);
-    setIsSubmitting(false);
+
+    try {
+      await handleRequest(e, updateEmail, router); // Assuming handleRequest can be awaited
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'There was an error updating your email.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <Card
-      title="Your Email"
-      description="Please enter the email address you want to use to login."
-      footer={
-        <div className="flex flex-col items-start justify-between sm:flex-row sm:items-center">
-          <p className="pb-4 sm:pb-0">
-            We will email you to verify the change.
-          </p>
-          <Button
-            variant="slim"
-            type="submit"
-            form="emailForm"
-            loading={isSubmitting}
-          >
-            Update Email
-          </Button>
-        </div>
-      }
-    >
-      <div className="mt-8 mb-4 text-xl font-semibold">
-        <form id="emailForm" onSubmit={(e) => handleSubmit(e)}>
-          <input
-            type="text"
-            name="newEmail"
-            className="w-1/2 p-3 rounded-md bg-zinc-800"
-            defaultValue={userEmail ?? ''}
-            placeholder="Your email"
-            maxLength={64}
-          />
-        </form>
-      </div>
-    </Card>
+    <Box as="section" p="4" borderWidth="1px" borderRadius="lg" overflow="hidden" margin={5}>
+      <Card p={5}>
+        <Text fontSize="xl" mb="4">Your Email</Text>
+        <Text mb="4">Please enter the email address you want to use to login. We will email you to verify the change.</Text>
+        <Form id="emailForm" onSubmit={handleSubmit}>
+        <VStack spacing="4" align="stretch" my="4">
+            <Input
+              name="newEmail"
+              defaultValue={userEmail ?? ''}
+              placeholder="Your email"
+              maxLength={64}
+              isDisabled={isSubmitting}
+            />
+                   <Flex justifyContent="flex-end">
+            <Button
+              variant="solid"
+              type="submit"
+              isLoading={isSubmitting}
+              loadingText="Updating..."
+              colorScheme="blue"
+            >
+              Update Email
+            </Button>
+          </Flex>
+          </VStack>
+        </Form>
+      </Card>
+    </Box>
   );
 }

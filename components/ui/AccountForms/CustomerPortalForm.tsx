@@ -5,7 +5,8 @@ import { useRouter, usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { createStripePortal } from '@/utils/stripe/server';
 import Link from 'next/link';
-import Card from '@/components/ui/Card';
+import { Card, Flex, Box, Text } from '@chakra-ui/react';
+import { Form, FormLayout, Field } from '@saas-ui/react';
 import { Tables } from '@/types_db';
 
 type Subscription = Tables<'subscriptions'>;
@@ -45,33 +46,39 @@ export default function CustomerPortalForm({ subscription }: Props) {
   };
 
   return (
+    <Box as="section" p="4" borderWidth="1px" borderRadius="lg" overflow="hidden" margin={5}>
     <Card
-      title="Your Plan"
-      description={
-        subscription
-          ? `You are currently on the ${subscription?.prices?.products?.name} plan.`
-          : 'You are not currently subscribed to any plan.'
-      }
-      footer={
-        <div className="flex flex-col items-start justify-between sm:flex-row sm:items-center">
-          <p className="pb-4 sm:pb-0">Manage your subscription on Stripe.</p>
+    p={5}
+    title={
+      subscription
+        ? `You are currently on the ${subscription?.prices?.products?.name} plan.`
+        : 'You are not currently subscribed to any plan.'
+    }
+  >
+    <Box p={5}>
+      <Flex justifyContent="space-between" alignItems="center">
+        <Text fontSize="lg">
+          {subscription ? (
+            `"You are currently on the ${subscription?.prices?.products?.name} plan:  "
+            "${subscriptionPrice}/${subscription?.prices?.interval}"`
+          ) : (
+            <Link color="teal.500" href="/">
+              Choose your plan
+            </Link>
+          )}
+        </Text>
           <Button
-            variant="slim"
+            variant="solid"
+            colorScheme="blue"
+            
             onClick={handleStripePortalRequest}
             loading={isSubmitting}
           >
             Open customer portal
-          </Button>
-        </div>
-      }
-    >
-      <div className="mt-8 mb-4 text-xl font-semibold">
-        {subscription ? (
-          `${subscriptionPrice}/${subscription?.prices?.interval}`
-        ) : (
-          <Link href="/">Choose your plan</Link>
-        )}
-      </div>
+            </Button>
+        </Flex>
+      </Box>
     </Card>
+    </Box>
   );
 }

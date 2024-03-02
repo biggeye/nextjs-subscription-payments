@@ -25,6 +25,13 @@
   border-color: "onyx";
 }
 
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
 .chatButton {
   position: fixed;
   bottom: 5px;
