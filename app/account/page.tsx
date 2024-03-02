@@ -1,8 +1,10 @@
 import CustomerPortalForm from '@/components/ui/AccountForms/CustomerPortalForm';
 import EmailForm from '@/components/ui/AccountForms/EmailForm';
 import NameForm from '@/components/ui/AccountForms/NameForm';
+import ContentTables from '@/components/ui/AccountForms/ContentTables';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
+import { Form, FormLayout, Field } from '@saas-ui/react';
 
 export default async function Account() {
   const supabase = createClient();
@@ -46,6 +48,7 @@ export default async function Account() {
         <CustomerPortalForm subscription={subscription} />
         <NameForm userName={userDetails?.full_name ?? ''} />
         <EmailForm userEmail={user.email} />
+        <ContentTables />
       </div>
     </section>
   );

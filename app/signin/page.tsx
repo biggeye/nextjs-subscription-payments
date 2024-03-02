@@ -1,11 +1,16 @@
-import { redirect } from 'next/navigation';
-import { getDefaultSignInView } from '@/utils/auth-helpers/settings';
-import { cookies } from 'next/headers';
+"use client";
 
-export default function SignIn() {
-  const preferredSignInView =
-    cookies().get('preferredSignInView')?.value || null;
-  const defaultView = getDefaultSignInView(preferredSignInView);
+import React, { useState, FormEvent } from 'react';
+import { Center } from '@chakra-ui/react';
+import SignUp from '@/components/ui/AuthForms/Signup';
 
-  return redirect(`/signin/${defaultView}`);
-}
+const Auth: React.FC = () => {
+
+  return (
+    <Center>
+      <SignUp />
+    </Center>
+  );
+};
+
+export default Auth;

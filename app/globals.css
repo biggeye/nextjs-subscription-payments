@@ -1,0 +1,195 @@
+/* Custom CSS Variables */
+:root {
+  --max-width: 1100px;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+*:focus:not(ol) {
+  @apply outline-none ring-2 ring-pink-500 ring-opacity-50;
+}
+
+.bottomInputFormFrame {
+  position: fixed;
+  bottom: 0;
+  width: 100%; /* Add this to span the entire width */
+               /* background-image: linear-gradient(to top, silver 80%, transparent 95%);  */
+  z-index: 10; /* Ensures it stays on top */
+  color: onyx;
+  background-color: silver;
+  border-width: 1px;
+  border-color: "onyx";
+}
+
+.chatButton {
+  position: fixed;
+  bottom: 5px;
+  left: 5px;
+}
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f0f0f0;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+/* Custom Code Style */
+.code {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 5px;
+  left: 40%;
+  font-size: xx-small;
+  border-bottom-left-radius: .2rem;
+  border-color: #374151;
+}
+
+.image-card {
+  border-width: 1px;
+  border-color: #454545ff; 
+  width: auto;
+  padding: 10px;
+  animation: shadow-loop 20s linear infinite;
+  }
+
+
+.featured-image-card {
+  border-width: 1px;
+  border-color: #454545ff; 
+  width: auto;
+  padding: 10px;
+  }
+
+
+  .animated {
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+  }
+  
+  .height-screen-helper {
+    min-height: calc(100vh - 80px);
+  }
+  
+
+/* Custom Animations */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes animateIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+@keyframes shadow-loop {
+  0%, 100% {
+    box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.2);
+  }
+  25% {
+    box-shadow:  2px 10px 2px rgba(0, 0, 0, 0.2);
+  }
+  50% {
+    box-shadow: -3px 15px 10px rgba(0, 0, 0, 0.2);
+  }
+  75% {
+    box-shadow: 2px 10px 100px rgba(0, 0, 0, 0.2);
+  }
+}
+
+
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+      transform: scale(0);
+  }
+  to {
+      opacity: 1;
+      transform: scale(1);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+      opacity: 1;
+      transform: scale(1);
+  }
+  to {
+      opacity: 0;
+      transform: scale(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+      transform: scale(1);
+      opacity: 1;
+  }
+  50% {
+      transform: scale(0.97);
+      opacity: .7;
+  }
+}
+
+
+.element-fade-in {
+  animation: fadeIn .2s ease-in;
+}
+
+.element-fade-out {
+  animation: fadeOut 2s linear;
+}
+
+.element-pulse {
+  animation: pulse .5s linear infinite;
+}
+
+.animated-shadow {
+  animation: shadow-loop 20s linear infinite;
+}
+
+.fade-in-from-top{
+  animation: animateIn 1.5s;
+}
+
+.Logo {
+  transition: fill 0.5s ease-in-out;
+}
